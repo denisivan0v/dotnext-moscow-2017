@@ -27,6 +27,9 @@ namespace DemoApp.Demos
                 var message = await _kafkaProducer.ProduceAsync(value, _topic);
 
                 Console.WriteLine($"Message '{message.Value}' produced to '{message.Topic}/{message.Partition} @{message.Offset}'");
+
+                // ReSharper disable once MethodSupportsCancellation
+                await Task.Delay(1000);
             }
         }
 
