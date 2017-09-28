@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 
+using Confluent.Kafka;
+
 using DemoApp.Demos;
 
 using Microsoft.Extensions.CommandLineUtils;
@@ -60,14 +62,30 @@ namespace DemoApp
                     });
 
             app.Command(
-                "batched-demo",
+                "non-efficient-consumer-demo",
                 config =>
                     {
                         config.HelpOption("-h|--help");
                         config.OnExecute(
                             () =>
                                 {
-                                    using (var demo = new BatchedConsumerDemo(logger, BrokerEndpoints, new[] { Topic }, 3))
+                                    using (var demo = new NonEfficientConsumerDemo(logger, BrokerEndpoints, new[] { Topic }, 3))
+                                    {
+                                        demo.RunAsync(cts.Token).GetAwaiter().GetResult();
+                                        return 0;
+                                    }
+                                });
+                    });
+
+            app.Command(
+                "manual-consumer-demo",
+                config =>
+                    {
+                        config.HelpOption("-h|--help");
+                        config.OnExecute(
+                            () =>
+                                {
+                                    using (var demo = new ManualConsumerDemo(logger, BrokerEndpoints, new[] { new TopicPartition(Topic, 0) }, 3))
                                     {
                                         demo.RunAsync(cts.Token).GetAwaiter().GetResult();
                                         return 0;

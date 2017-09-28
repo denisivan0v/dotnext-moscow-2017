@@ -9,19 +9,19 @@ using Microsoft.Extensions.Logging;
 
 namespace DemoApp.Demos
 {
-    public sealed class BatchedConsumerDemo : IDisposable
+    public sealed class NonEfficientConsumerDemo : IDisposable
     {
-        private const string GroupId = "batched-consumer";
+        private const string GroupId = "non-efficient-consumer";
 
         private readonly IEnumerable<string> _topics;
-        private readonly KafkaConsumer _kafkaConsumer;
+        private readonly NonEfficientKafkaConsumer _kafkaConsumer;
         private readonly int _batchSize;
 
-        public BatchedConsumerDemo(ILogger logger, string brokerEndpoints, IEnumerable<string> topics, int batchSize)
+        public NonEfficientConsumerDemo(ILogger logger, string brokerEndpoints, IEnumerable<string> topics, int batchSize)
         {
             _topics = topics;
             _batchSize = batchSize;
-            _kafkaConsumer = new KafkaConsumer(logger, brokerEndpoints, GroupId);
+            _kafkaConsumer = new NonEfficientKafkaConsumer(logger, brokerEndpoints, GroupId);
         }
 
         public async Task RunAsync(CancellationToken cancellationToken)

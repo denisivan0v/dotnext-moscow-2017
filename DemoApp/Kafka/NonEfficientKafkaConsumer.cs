@@ -11,12 +11,12 @@ using Microsoft.Extensions.Logging;
 
 namespace DemoApp.Kafka
 {
-    public sealed class KafkaConsumer : IDisposable
+    public sealed class NonEfficientKafkaConsumer : IDisposable
     {
         private readonly ILogger _logger;
         private readonly Consumer<Null, string> _consumer;
 
-        public KafkaConsumer(ILogger logger, string brokerEndpoints, string groupId)
+        public NonEfficientKafkaConsumer(ILogger logger, string brokerEndpoints, string groupId)
         {
             _logger = logger;
 
