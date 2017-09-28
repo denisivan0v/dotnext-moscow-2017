@@ -31,7 +31,7 @@ namespace DemoApp.Demos
         {
             var observable = _kafkaConsumer.Consume(cancellationToken);
 
-            observable.Buffer(_batchSize)
+            var subscription = observable.Buffer(_batchSize)
                       .Subscribe(
                           messages =>
                               {
@@ -44,7 +44,12 @@ namespace DemoApp.Demos
                               });
 
             var taskCompletionSource = new TaskCompletionSource<object>();
-            _registration = cancellationToken.Register(() => taskCompletionSource.SetResult(null));
+            _registration = cancellationToken.Register(
+                () =>
+                    {
+                        subscription.Dispose();
+                        taskCompletionSource.SetResult(null);
+                    });
 
             await taskCompletionSource.Task;
         }
