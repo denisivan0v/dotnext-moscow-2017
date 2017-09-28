@@ -93,6 +93,22 @@ namespace DemoApp
                                 });
                     });
 
+            app.Command(
+                "rx-consumer-demo",
+                config =>
+                    {
+                        config.HelpOption("-h|--help");
+                        config.OnExecute(
+                            () =>
+                                {
+                                    using (var demo = new RxConsumerDemo(logger, BrokerEndpoints, new[] { Topic }, 3))
+                                    {
+                                        demo.RunAsync(cts.Token).GetAwaiter().GetResult();
+                                        return 0;
+                                    }
+                                });
+                    });
+
             var exitCode = 0;
             try
             {
