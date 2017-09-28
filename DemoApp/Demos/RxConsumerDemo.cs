@@ -4,8 +4,6 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Confluent.Kafka;
-
 using DemoApp.Kafka;
 
 using Microsoft.Extensions.Logging;
